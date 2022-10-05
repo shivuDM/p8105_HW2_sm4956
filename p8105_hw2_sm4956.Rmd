@@ -139,7 +139,7 @@ merged_trash = bind_rows (trash_W1, prof_W2) %>%
 
 Cleaning data set polsmonth
 
-```{r polsmonth}
+```{r polsmonth, message = FALSE}
 pols_ds = read_csv(
     "data/fivethirtyeight_datasets/pols-month.csv") %>%
   janitor::clean_names() %>%
@@ -151,7 +151,7 @@ pols_ds = read_csv(
 
 Cleaning data set snp
 
-```{r snp}
+```{r snp, message = FALSE}
 snp_ds = read_csv(
     "data/fivethirtyeight_datasets/snp.csv") %>%
   janitor::clean_names() %>%
@@ -160,12 +160,11 @@ snp_ds = read_csv(
          year = ifelse(year > 49, year + 1900, year + 2000)) %>%
 select(-day) %>%
   select (year, month, everything())
-
 ```
 
 Cleaning data set unemployment
 
-```{r unemployment}
+```{r unemployment, message = FALSE}
 unemploy_ds = read_csv(
     "data/fivethirtyeight_datasets/unemployment.csv") %>%
   janitor::clean_names() %>%
@@ -173,6 +172,13 @@ unemploy_ds = read_csv(
 names_to = "month",
 values_to = "unemployment_%") %>%
   mutate (month = str_to_title(month))
-  
 ```
+
+Merging snp and pols data sets
+
+```{r}
+pomo_snp = left_join(pols_ds, snp_ds)
+```
+
+
 
