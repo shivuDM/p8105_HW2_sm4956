@@ -129,7 +129,8 @@ merged_trash = bind_rows (trash_W1, prof_W2) %>%
 
 - The total number of observations/rows are **`r nrow(merged_trash)`** and the total number of variables/columns are **`r ncol(merged_trash)`**
 - There are 3 character variables, 11 numeric variables and 1 date variable 
-- The main variables in the data set are weight of the trash (in tons), volume of the trash (in cubic yards) and the amount of various types of trash collected like plastic bottles, chips bags, cigarette butts, glass bottles, sports balls, polystyrene), the homes powered, and the distribution by names (Mr and Prof Trash).
+- The key variables in this data set are **`r colnames(merged_trash)`**, that desribe:
+weight of the trash (in tons), volume of the trash (in cubic yards) and the amount of various types of trash collected like plastic bottles, chips bags, cigarette butts, glass bottles, sports balls, polystyrene), the homes powered, and the distribution by names (Mr and Prof Trash).
 - The total weight of trash collected combined is **`r sum(merged_trash$weight_tons, na.rm = TRUE)`** tons
 - The total weight of trash collected by Professor Trash is **`r sum(prof_W2$weight_tons, na.rm = TRUE)`** tons
 - The total number of sports balls collected by Mr Trash is **`r sum(merged_trash[which(merged_trash$year == "2020" & merged_trash$wheel == "mrtrash"), "sports_balls"])`**
@@ -180,5 +181,32 @@ Merging snp and pols data sets
 pomo_snp = left_join(pols_ds, snp_ds)
 ```
 
+Merging with unemployment data set
+
+```{r}
+pomosnp_unemp = left_join(pomo_snp,unemploy_ds)
+```
+
+### Summaries of Data sets:
 
 
+* summary of pomosnp_unemp: the merged data set has **`r nrow(pomosnp_unemp)`** observations and **`r ncol(pomosnp_unemp)`** variables. the range of the years in this data set is **`r range(pomosnp_unemp$year)`** this dataset has key variables **`r colnames(pomosnp_unemp)`** that describe: year, date, president (whether the president was republican or democratic), gov_gop (no. of republican governors), sen_gop (no. of republican senators), rep_gop(no. of republican reps), gov_dem (no. of democratic governors), sen_dem (no. of democratic senators), rep_dem (no. of democratic reps): all of these with their associated time; close (the closing values of stock index with associated dates) and unemployment% (percentage of unemployment at that time).
+
+
+* summary of pomo_snp: the merged data set has **`r nrow(pomo_snp)`** observations and **`r ncol(pomo_snp)`** variables. the range of the years in this data set is **`r range(pomo_snp$year)`** this dataset has key variables **`r colnames(pomo_snp)`**
+
+
+* summary of pols_ds:
+this dataset describes the number of national politicians who were either democratic or republic at a given time (month and year). The previous dataset pols-month.csv had 822 observations and 9 variables. it had separate columns for democratic and republican presidents and date. The pols_ds has **`r nrow(pols_ds)`** observations and **`r ncol(pols_ds)`** variables. the range of the years in this data set is **`r range(pols_ds$year)`**. The key variables are **`r colnames(pols_ds)`**. This cleaned dataset pols_ds has a single column for president to see whether they were democratic or republican, and the mon (date) was broken down to separate columns for day, month, and year- of which day column was removed. 
+
+
+* summary of snp_ds:
+this dataset describes the closing values of S&P stock index at a given time (month and year). The previous snp dataset had 787 observations and 2 variables. This dataset had date and closing values of stock index. The snp_ds has **`r nrow(snp_ds)`** observations and **`r ncol(snp_ds)`** variables.
+the range of the years in this data set is **`r range(snp_ds$year)`**. The key variables are **`r colnames(snp_ds)`** This cleaned dataset snp_ds has a columnn for closing values, and the date column was broken down to separate columns for day, month, and year- of which day column was removed. The format for year was also converted to 4 digit from the 2-digit format.
+
+
+* summary of unemploy_ds:
+this dataset describes the percentage of unemployment at a given time (month and year). The previous unemployment dataset has 68 observations and 13 variables. It had unemployment % distributed by each month and year. The unemploy_ds has **`r nrow(unemploy_ds)`** observations and **`r ncol(unemploy_ds)`** variables. the range of the years in this data set is **`r range(unemploy_ds$year)`**. The key variables are **`r colnames(unemploy_ds)`**. This cleaned dataset unemploy_ds has unemployment % column and 2 other columns for showing unemployment by month and year. 
+
+*Final merged file details:
+`r skimr:: skim(pomosnp_unemp)`
