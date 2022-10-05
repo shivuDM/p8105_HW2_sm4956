@@ -1,0 +1,21 @@
+---
+title: "p8105_hw2_sm4956"
+author: Shivangi Deepak Mewada
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Problem 0
+* created repository and R project for HW2, created rmd file and rending to GitHub. 
+* created a sub-directory/ data folder that has all the data set files to be used for this HW
+
+```{r load_libraries}
+library(tidyverse)
+library(readxl)
+options(tibble.print_min = 5)
+```
+
+
