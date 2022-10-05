@@ -18,4 +18,76 @@ library(readxl)
 options(tibble.print_min = 5)
 ```
 
+## Problem 1
+
+reading and cleaning data, retaining important variables
+
+```{r}
+trans_ent = 
+  read_csv(
+    "data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv",
+    col_types = cols(Route8 = "c", Route9 = "c", Route10 = "c", Route11 = "c")) %>% 
+  janitor::clean_names() %>% 
+  select(
+    line, station_name, station_latitude, station_longitude, 
+    starts_with("route"), entry, exit_only, vending, entrance_type, 
+    ada) %>% 
+  mutate(entry = ifelse(entry == "YES", TRUE, FALSE))
+```
+
+To check the number of distinct stations:
+
+```{r}
+trans_ent %>% 
+  select(station_name, line) %>% 
+  distinct
+```
+
+To check the number of distinct stations that are ADA Compliant:
+
+```{r}
+trans_ent %>% 
+  filter(ada == TRUE) %>% 
+  select(station_name, line) %>% 
+  distinct
+```
+
+To see the proportion of station entrances/exits without vending allow entrance:
+
+```{r}
+trans_ent %>% 
+  filter(vending == "NO") %>% 
+  pull(entry) %>% 
+  mean
+```
+
+To check the distinct stations serving A trains (and the ones that are ADA Compliant):
+
+```{r}
+trans_ent %>% 
+  pivot_longer(
+    route1:route11,
+    names_to = "route_num",
+    values_to = "route") %>% 
+  filter(route == "A") %>% 
+  select(station_name, line) %>% 
+  distinct
+
+trans_ent %>% 
+  pivot_longer(
+    route1:route11,
+    names_to = "route_num",
+    values_to = "route") %>% 
+  filter(route == "A", ada == TRUE) %>% 
+  select(station_name, line) %>% 
+  distinct
+```
+
+### Answers
+
+* There are 465 distinct stations.
+* There are 84 distinct stations, that are ADA compliant.
+* the proportion of station entrances / exits without vending allow entrance is 0.38.
+* There are 60 distinct stations, that serve the A train.
+* There are 17 distinct stations, that serve the A train and are ADA compliant.
 
