@@ -116,4 +116,21 @@ mutate (year = as.character(year),
        wheel = "proftrash" )
 ```
 
+Combining both the data sets:
+
+```{r combining}
+merged_trash = bind_rows (trash_W1, prof_W2) %>%
+  janitor::clean_names()
+```
+
+### Description of the data set post merging:
+
+`r skimr:: skim(merged_trash)`
+
+- The total number of observations/rows are **`r nrow(merged_trash)`** and the total number of variables/columns are **`r ncol(merged_trash)`**
+- There are 3 character variables, 11 numeric variables and 1 date variable 
+- The main variables in the data set are weight of the trash (in tons), volume of the trash (in cubic yards) and the amount of various types of trash collected like plastic bottles, chips bags, cigarette butts, glass bottles, sports balls, polystyrene), the homes powered, and the distribution by names (Mr and Prof Trash).
+- The total weight of trash collected combined is **`r sum(merged_trash$weight_tons, na.rm = TRUE)`** tons
+- The total weight of trash collected by Professor Trash is **`r sum(prof_W2$weight_tons, na.rm = TRUE)`** tons
+- The total number of sports balls collected by Mr Trash is **`r sum(merged_trash[which(merged_trash$year == "2020" & merged_trash$wheel == "mrtrash"), "sports_balls"])`**
 
